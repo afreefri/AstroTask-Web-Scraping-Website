@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body class="homepage-body">
+    <nav>
+        <h1><span style="color: #ffc107;">{{ date }}</span> ‣ Welcome {{ username }}!</h1>
+        <a href="/logout">Logout</a>
+    </nav>
+    
+    <!-- quote of the day -->
+    <div class="quote-box">
+        <p class="quote">"{{quote}}"</p>
+        <p class="author">{{author}}</p>
+    </div>
+
+    <!-- Weather and moon phase information -->
+    <div class="top">
+        <div class="weather-card">
+            <div class="widget">
+                <div class="left">
+                    {% if 'Sun' in weather %}
+                        <img src="/static/images/sunny.png" class="icon">
+                    {% elif 'Cloud' in weather %}
+                        <img src="/static/images/cloudy.png" class="icon">
+                    {% elif 'Rain' in weather or 'Shower' in weather %}
+                        <img src="/static/images/rainy.png" class="icon">
+                    {% elif 'Snow' in weather %}
+                        <img src="/static/images/snow.png" class="icon">
+                    {% elif 'Thunder' in weather %}
+                        <img src="/static/images/thunder.png" class="icon">
+                    {% else %}
+                        <img src="/static/images/clear fair.png" class="icon">
+                    {% endif %}
+
+                    <h5 class="weather-text">{{weather}}</h5>
+
+                </div>
+
+                <div class="right">
+                    <h5 class="location">{{location}}</h5>
+                    <h5 class="temp">{{temp}}F</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="moon-phase" id="moonPhaseContainer">
+            <h4 class="heading">{{moon_phase}}</h4>
+
+            {% if moon_phase == 'New Moon' %}
+                <p>➼ <strong>Planting seeds in new growing cycle:</strong> Set your intention</p>
+                <p>➼ <strong>Keyword:</strong> Beginning</p>
+                <p>➼ <strong>Spells:</strong> Deconstructive magic, Curses, Banishings, Soul searching, Divination.</p>
+            {% endif %}
+
+            {% if moon_phase == 'Waxing Crescent' %}
+                <p>➼ <strong>The seeds begin to grow:</strong> Hold your vision, take action</p>
+                <p>➼ <strong>Keyword:</strong> Initiative</p>
+                <p>➼ <strong>Spells:</strong>Constructive magic, attraction, wealth/success, luck, friendship</p>
+            {% endif %}
+
+            {% if moon_phase == 'First Quarter' %}
+                <p>➼ <strong>The plant sprouts first leaves:</strong> Exert your will, Effort is required</p>
+                <p>➼ <strong>Keyword:</strong> growth</p>
+                <p>➼ <strong>Spells:</strong>Creativity, Divination, Motivation, Calming, Strength/Growing</p>
+            {% endif %}
+
+            {% if moon_phase == 'Waxing Gibbous' %}
+                <p>➼ <strong>The plant sprouts flower buds:</strong> Refine and Observe, Build Momentum</p>
+                <p>➼ <strong>Keyword:</strong> Perfection</p>
+                <p>➼ <strong>Spells:</strong> Motivation, Attraction, Success, Good Health</p>
+            {% endif %}
+
+            {% if moon_phase == 'Full Moon' %}
+                <p>➼ <strong>The plants flowers blossom:</strong> Become aware of impact and collaboration</p>
+                <p>➼ <strong>Keyword:</strong> Clarity</p>
+                <p>➼ <strong>Spells:</strong> Love magic, Charging, Healing, Banishing, Cleansing, Clarity</p>
+            {% endif %}
+
+            {% if moon_phase == 'Waning Gibbous' %}
+                <p>➼ <strong>The plant bears fruit:</strong> Celebrate and harvest the benefits</p>
+                <p>➼ <strong>Keyword:</strong> Culmination</p>
+                <p>➼ <strong>Spells:</strong> Relinquishing, Undoing bindings, Cleaning, Undoing curses</p>
+            {% endif %}
+
+            {% if moon_phase == 'Last Quarter' %}
+                <p>➼ <strong>The plant begins to lose leaves & wither:</strong> Release that which no longer serves you</p>
+                <p>➼ <strong>Keyword:</strong> Decline</p>
+                <p>➼ <strong>Spells:</strong> Breaking bad habits, Breaking curses, banishing</p>
+            {% endif %}
+
+            {% if moon_phase == 'Waning Crescent' %}
+                <p>➼ <strong>The plant prepares seeds for new cycle:</strong> Rest, recuperate, and reflect.</p>
+                <p>➼ <strong>Keyword:</strong> Surrender</p>
+                <p>➼ <strong>Spells:</strong> Balance, Success, Attaining wisdom, Atonement</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- daily horoscope-->
+    <div class="news-card">
+        <h2 class="horoscope">Daily Horoscope</h2>
+        <div>
+            <p>{{horoscope}}</p>
+            <a target="_blank" class="horoscopeURL" href="{{horoscopeURL}}">Source</a>
+        </div>
+        
+    </div>
+
+    <!-- to-do section -->
+    <div class="to-do-pad">
+        <div class="content">
+            <div class="left">
+                <h1 class="to-do-heading">Today's Quests</h1>
+                <ul class="to-do">
+                {% if not tasks %}
+                    <li style="color: #707070ea;">Nothing to do yet...</li>
+                {% else %}
+                    {% for task in tasks %}
+                        <li> {{task}}</li>
+                    {% endfor %}
+                {% endif %}
+                
+                </ul>
+            </div>
+        
+
+            <div class="right">
+                <h2 class="add" >Add Tasks</h2>
+                <div class="text-box">
+                    <form id="task-form" action="/addTasks" method="POST">
+                        <div class="input-wrapper">
+                            <textarea name="tasks" rows="1" placeholder="Add new tasks by separating them with a new line (press Enter)."></textarea>
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+                <h2 class="delete">Delete Tasks</h2>
+                <div class="text-box">
+                    <form id="task-form" action="/deleteTasks" method="POST">
+                        <div class="input-wrapper">
+                            <textarea name="indices" rows="1" placeholder="To delete a task, enter the corresponding task number from the list. For example, to delete task 1, simply type '1'. Separate multiple tasks to be deleted by placing each on a new line."></textarea>
+                            <input type="submit" value="Delete">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- daily news headlines -->
+    <div class="news-card">
+        <div class="left">
+            <img src="/static/images/newspaper.png" class="news-icon">
+            <h2>Top CNN Headlines</h5>
+        </div>
+        
+        <div class="right">
+            {% for title, link in headlines %}
+                <a href={{link}} target="_blank">{{title}}</a>
+            {% endfor %}
+        </div>
+
+    </div>
+    
+    
+</body>
+</html>
