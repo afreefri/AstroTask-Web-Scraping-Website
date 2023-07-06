@@ -176,7 +176,6 @@ def deleteTasks():
 @app.route("/logout")
 def logout():
     # clear everything in the session when you log out
-    print(session)
     for key in list(session.keys()):
         # we want to keep the database with the userinfo, so don't delete that
         if key != "db":
